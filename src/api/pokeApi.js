@@ -18,7 +18,7 @@ const fetchWrapper = async (url = '') => {
 };
 
 const getAllPokemons = async (pageNumber, limit) => {
-  const url = `?offset=${pageNumber * limit}&limit=${limit}`;
+  const url = `?offset=${pageNumber * limit}&limit=2000`; // hardcoded limit to get all pokemons
 
   return fetchWrapper(url);
 };
