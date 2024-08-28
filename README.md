@@ -88,16 +88,15 @@ PISemon2024
 │   │   │   ├── index.jsx
 │   │   │   └── styles.scss
 │   │   └── ... otros componentes ...
-│   ├── containers
-│   │   ├── Home
-│   │   │   ├── index.jsx
-│   │   │   └── styles.scss
-│   │   ├── PokemonPage
-│   │   │   ├── index.jsx
-│   │   │   └── styles.scss
-│   │   └── ... otros contenedores ...
-│   └── config.js
-└── ... otros archivos ...
+│   └── containers
+│       ├── Home
+│       │   ├── index.jsx
+│       │   └── styles.scss
+│       ├── PokemonPage
+│       │   ├── index.jsx
+│       │   └── styles.scss
+│       └── ... otros contenedores ...
+└── ... otros archivos y directorios ...
 ```
 
 ### ¡Buena suerte y diviértete programando!
