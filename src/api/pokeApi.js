@@ -1,13 +1,13 @@
-const baseURL = 'https://pokeapi.co/api/v2/pokemon/';
-const defaultHeaders = {
+export const baseURL = import.meta.env.VITE_POKEAPI_BASE_URL;
+
+const headers = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
 };
 
-const fetchWrapper = async (url, options = {}) => {
+const fetchWrapper = async (url = '') => {
   const response = await fetch(`${baseURL}${url}`, {
-    headers: { ...defaultHeaders, ...options.headers },
-    ...options,
+    headers,
   });
 
   if (!response.ok) {

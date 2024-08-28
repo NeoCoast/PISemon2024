@@ -10,6 +10,9 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 export default [
   { ignores: ['dist'] },
   {
+    env: {
+      node: true,
+    },
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
