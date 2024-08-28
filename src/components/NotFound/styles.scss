@@ -1,0 +1,26 @@
+@import '../../constants/theme.scss';
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &--route {
+    height: calc(100vh - 150px);
+    background-color: $background-color;
+  }
+
+  &__image {
+    width: 200px;
+    height: auto;
+  }
+
+  &__text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: $primary-color;
+  }
+}

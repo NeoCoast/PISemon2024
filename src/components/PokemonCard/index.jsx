@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
-import './styles.css';
+import './styles.scss';
 
 const PokemonCard = ({
   id,
@@ -19,27 +19,27 @@ const PokemonCard = ({
       onClick={() => navigate(`/pokemon/${id}`)}
       type="button"
     >
-      <div className="pokemon-card-left">
+      <div className="pokemon-card__left">
         <p>
-          ID: {id}
+          ID: <strong>{id}</strong>
         </p>
         <p>
-          Name: {name}
+          Name: <strong>{name}</strong>
         </p>
         <p>
           Types:
         </p>
-        <p>
-          {`- ${type1}`}
-        </p>
-        {type2 && <p>{`- ${type2}`}</p>}
+        <strong>
+          {`• ${type1}`}
+        </strong>
+        {type2 && <><br/><br/><strong>{`• ${type2}`}</strong></>}
       </div>
       <img
-        className="pokemon-card-image"
+        className="pokemon-card__image"
         src={image}
         alt={name}
-        width="200"
-        height="200"
+        width="240"
+        height="240"
       />
     </button>
   );

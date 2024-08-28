@@ -1,12 +1,13 @@
+// index.jsx
+
 import { useEffect, useState, useCallback } from 'react';
-import { RotatingLines } from 'react-loader-spinner';
 import Select from 'react-select';
 
 import PokemonList from '../../components/PokemonList';
 import api from '../../api/pokeApi';
 import arrow from '../../assets/arrow.png';
 
-import './styles.css';
+import './styles.scss';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,19 +29,25 @@ const Home = () => {
     setPageNumber(newPageNumber);
 
     try {
-      const res = await api.getAllPokemons(newPageNumber, itemsLimit);
+      const { results }  = await api.getAllPokemons(newPageNumber, itemsLimit);
 
-      if (res.data.results) {
+      if (results) {
         await Promise.all(
-          res.data.results.map(async ({ name }) => {
-            const { data: pokemon } = await api.getPokemon(name);
+          results.map(async ({ name: identifier }) => {
+            const {
+              id, 
+              name, 
+              types, 
+              sprites: { front_default: image },
+            } = await api.getPokemon(identifier);
+            
             setPokemonList((prev) => [
               ...prev,
               {
-                id: pokemon.id,
-                name: pokemon.name,
-                types: pokemon.types?.map(({ type }) => type.name) || [],
-                image: pokemon.sprites?.front_default || '',
+                id,
+                name,
+                types: types?.map(({ type }) => type.name) || [],
+                image,
               },
             ].sort((a, b) => a.id - b.id));
           })
@@ -59,59 +66,55 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="home-content">
-        <div className="content-controllers">
-          <div className="content-selector">
-            <Select
-              defaultValue={{ label: 'view 50 items', value: 50 }}
-              className="selector-input"
-              options={itemsLimitOptions}
-              onChange={({ value }) => setItemsLimit(value)}
-              isSearchable={false}
-            />
-          </div>
-          <div className="content-pages">
-            {pageNumber > 0 && (
+      <div className="home__content">
+        {!error && (
+          <div className="home__controllers">
+            <div className="home__selector">
+              <Select
+                defaultValue={{ label: 'view 50 items', value: 50 }}
+                className="home__selector-input"
+                options={itemsLimitOptions}
+                onChange={({ value }) => setItemsLimit(value)}
+                isSearchable={false}
+                isDisabled={isLoading}
+              />
+            </div>
+            <div className="home__pages">
+              {pageNumber > 0 && (
+                <button
+                  className="home__button"
+                  onClick={() => getPokemonList(pageNumber - 1)}
+                  type="button"
+                  disabled={isLoading}
+                >
+                  <img
+                    src={arrow}
+                    className="home__img--rotated"
+                    alt="Arrow"
+                    height={20}
+                    width={20}
+                  />
+                  previous
+                </button>
+              )}
               <button
-                className="content-buttons"
-                onClick={() => getPokemonList(pageNumber - 1)}
+                className="home__button"
+                onClick={() => getPokemonList(pageNumber + 1)}
                 type="button"
+                disabled={isLoading}
               >
-                <img
-                  src={arrow}
-                  className="rotated-img"
-                  alt="Arrow"
-                  height={20}
-                  width={20}
-                />
-                previous
+                next
+                <img className="home__img" src={arrow} alt="Arrow" width={20} />
               </button>
-            )}
-            <button
-              className="content-buttons"
-              onClick={() => getPokemonList(pageNumber + 1)}
-              type="button"
-            >
-              next
-              <img className="arrow" src={arrow} alt="Arrow" width={20} />
-            </button>
+            </div>
           </div>
-        </div>
-
-        {isLoading ? (
-          <div className="content-loading">
-            <RotatingLines
-              visible
-              height="80"
-              width="80"
-              strokeColor="#2581a8"
-            />
-          </div>
-        ) : error ? (
-          <div className="content-error">Error al obtener la lista de pokemon</div>
-        ) : (
-          <PokemonList pokemonList={pokemonList} />
         )}
+
+        <PokemonList 
+          pokemonList={pokemonList}
+          isLoading={isLoading}
+          error={error}
+        />
       </div>
     </div>
   );

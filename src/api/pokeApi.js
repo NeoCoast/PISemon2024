@@ -1,28 +1,31 @@
-import axios from 'axios';
+const baseURL = 'https://pokeapi.co/api/v2/pokemon/';
+const defaultHeaders = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
 
-const pokemonService = (
-  axios.create({
-    baseURL: 'https://pokeapi.co/api/v2/pokemon/',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  }));
+const fetchWrapper = async (url, options = {}) => {
+  const response = await fetch(`${baseURL}${url}`, {
+    headers: { ...defaultHeaders, ...options.headers },
+    ...options,
+  });
 
-const getAllPokemons = (pageNumber, limit) => pokemonService({
-  method: 'GET',
-  params: {
-    offset: pageNumber * limit,
-    limit,
-  },
-})
-  .then((res) => res);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 
-const getPokemon = (id) => pokemonService({
-  method: 'GET',
-  url: id,
-})
-  .then((res) => res);
+  return response.json();
+};
+
+const getAllPokemons = async (pageNumber, limit) => {
+  const url = `?offset=${pageNumber * limit}&limit=${limit}`;
+
+  return fetchWrapper(url);
+};
+
+const getPokemon = async (id) => {
+  return fetchWrapper(id);
+};
 
 const methods = {
   getAllPokemons,

@@ -8,27 +8,35 @@ import NotFound from '../../components/NotFound';
 import api from '../../api/pokeApi';
 import arrow from '../../assets/arrow.png';
 
-import './styles.css';
+import './styles.scss';
 
 const PokemonPage = () => {
   const [pokemon, setPokemon] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const { id } = useParams();
+
   const getPokemonById = async (pokemonId) => {
     setPokemon(null);
     setIsLoading(true);
 
     try {
-      const res = await api.getPokemon(pokemonId);
-      if (res.data) {
-        const poke = res.data;
+      const data  = await api.getPokemon(pokemonId);
+
+      if (data) {
+        const {
+          id,
+          name,
+          types,
+          sprites: { front_default: image },
+        } = data;
+        
         setPokemon({
-          id: poke.id,
-          name: poke.name,
-          types: poke.types?.map(({ type }) => type.name) || [],
-          image: poke.sprites?.front_default || '',
+          id,
+          name,
+          types: types?.map(({ type }) => type.name) || [],
+          image: image || '',
         });
       }
     } catch {
@@ -58,16 +66,16 @@ const PokemonPage = () => {
   return (
     <div className="pokemon-page">
       {pokemon ? (
-        <div className="pokemon-page-row-container">
-          <div className="pokemon-page-row">
+        <div className="pokemon-page__row-container">
+          <div className="pokemon-page__row">
             {Number(id) - 1 > 0 && (
               <div
                 aria-hidden="true"
-                className="pokemon-page-img-container"
+                className="pokemon-page__img-container"
                 onClick={() => navigate(`/pokemon/${Number(id) - 1}`)}
               >
                 <img
-                  className="pokemon-page-rotated-img"
+                  className="pokemon-page__img pokemon-page__img--rotated"
                   src={arrow}
                   alt="Arrow"
                   height={20}
@@ -78,10 +86,11 @@ const PokemonPage = () => {
             <PokemonCard {...pokemon} />
             <div
               aria-hidden="true"
-              className="pokemon-page-img-container"
+              className="pokemon-page__img-container"
               onClick={() => navigate(`/pokemon/${Number(id) + 1}`)}
             >
               <img
+                className="pokemon-page__img"
                 src={arrow}
                 alt="Arrow"
                 height={20}

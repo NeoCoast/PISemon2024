@@ -1,0 +1,21 @@
+@import '../../constants/theme.scss';
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-gap: 20px;
+  width: 85%;
+
+  &__error {
+    color: $error-color;
+    margin: 100px auto;
+    font-size: 24px;
+    font-family: $primary-font;
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+  }
+}

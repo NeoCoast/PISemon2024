@@ -39,6 +39,13 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'react/jsx-indent': ['error', 2],
+      'react/jsx-indent-props': ['error', 2],
+      'indent': ['error', 2, {
+        'SwitchCase': 1
+      }],
+      'quotes': ['error', 'single'],
+      'object-curly-spacing': ['error', 'always'],
     },
   },
 ]
